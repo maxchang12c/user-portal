@@ -5,6 +5,7 @@
         :items="customers"
         :headers="headers"
         @clickRow="viewCustomer"
+        @hoverInfo="assignPreviewValue"
       >
         <template #top-right>
           <v-btn
@@ -30,14 +31,19 @@
             small
             depressed
             color="error"
-            @click="deleteCustomer(item)"
+            :loading="loading.delete"
+            @click.stop="deleteCustomer(item)"
           >
             Delete
           </v-btn>
         </template>
       </UserTable>
     </div>
-    <v-card :min-height="'500'" class="d-flex justify-center ml-2 flex-grow-1">
+    <v-card
+      :min-height="'500'"
+      max-width="250"
+      class="d-flex justify-center ml-2 flex-grow-1"
+    >
       <template slot="progress">
         <v-progress-linear
           color="deep-purple"
@@ -49,13 +55,11 @@
         <v-avatar class="my-6" size="140">
           <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
         </v-avatar>
-        <div class="actions mb-6">
-          <v-btn small depressed color="primary"> View </v-btn>
-          <v-btn class="ml-2" small depressed color="error"> Delete </v-btn>
+        <div class="preview">
+          <div class="subtitle-1">Name: {{ previewData.name }}</div>
+          <div>Id: {{ previewData.id }}</div>
+          <div>Email: {{ previewData.email }}</div>
         </div>
-        <div class="subtitle-1">Name: Max</div>
-        <div>IC: 970534385245</div>
-        <div>DOB: 1997/5/24</div>
       </div>
     </v-card>
   </div>
@@ -72,6 +76,12 @@ export default {
   data() {
     return {
       customers: [],
+      loading: { delete: false },
+      previewData: {
+        name: "",
+        email: "",
+        id: "",
+      },
       headers: [
         {
           text: "Name",
@@ -95,13 +105,23 @@ export default {
   },
 
   methods: {
+    assignPreviewValue(item) {
+      this.previewData = { ...item };
+    },
     async deleteCustomer({ id }) {
-      if (id) {
-        const { ret } = await userApi.deleteCustomer({
-          id,
-        });
-        if (ret == 0) this.getList();
-        else throw "delete failed";
+      try {
+        if (id) {
+          this.loading.delete = true;
+          const { ret } = await userApi.deleteCustomer({
+            id,
+          });
+          if (ret == 0) this.getList();
+          else throw "delete failed";
+        }
+      } catch (e) {
+        throw e;
+      } finally {
+        this.loading.delete = false;
       }
     },
     async getList() {
@@ -124,3 +144,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.preview {
+  max-width: 200px;
+}
+</style>

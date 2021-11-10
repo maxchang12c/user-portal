@@ -1,7 +1,7 @@
 <template>
   <BasicTemplate>
     <template #body>
-      <div class="ma-5">
+      <div class="ma-2">
         <router-view></router-view>
       </div>
     </template>

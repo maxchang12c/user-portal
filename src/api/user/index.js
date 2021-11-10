@@ -13,7 +13,9 @@ export const userApi = {
         email,
         dialCode,
         countryCode,
-        dob
+        dob,
+        international,
+        significant
     }) {
         const data = {
             name,
@@ -21,7 +23,9 @@ export const userApi = {
             email,
             dialCode,
             countryCode,
-            dob
+            dob,
+            international,
+            significant
         };
         return Api.post('/add', data);
     },
@@ -32,7 +36,9 @@ export const userApi = {
         dialCode,
         countryCode,
         dob,
-        prevId
+        prevId,
+        international,
+        significant
     }) {
         const data = {
             name,
@@ -40,7 +46,8 @@ export const userApi = {
             email,
             dialCode,
             countryCode,
-            dob, prevId
+            dob, prevId, international,
+            significant
         };
         return Api.post('/update', data);
     },

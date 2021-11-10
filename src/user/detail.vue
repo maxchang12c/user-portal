@@ -1,5 +1,5 @@
 <template>
-  <div class="user-detail">
+  <div v-if="loaded" class="user-detail">
     <ValidationObserver ref="form">
       <div class="d-flex">
         <v-row>
@@ -99,6 +99,7 @@
           small
           depressed
           color="primary"
+          :loading="getBtnActions.firstBtnAction.loading"
           @click="getBtnActions.firstBtnAction.action"
         >
           {{ getBtnActions.firstBtnAction.text }}
@@ -107,6 +108,7 @@
           small
           depressed
           color="error"
+          :loading="getBtnActions.secondBtnAction.loading"
           @click="getBtnActions.secondBtnAction.action"
         >
           {{ getBtnActions.secondBtnAction.text }}
@@ -120,7 +122,6 @@ import { isUndefinedNullOrEmpty } from "@/utils";
 import TextField from "@/components/text-field";
 import MobileField from "@/components/mobile-field";
 import { userApi } from "@/api/user/index.js";
-// import DatePicker from "@/components/date-field";
 export default {
   name: "UserDetail",
   components: {
@@ -137,6 +138,10 @@ export default {
             this.$route.params.type == "add"
               ? this.saveCustomerInfo
               : this.editCustomerInfo,
+          loading:
+            this.$route.params.type == "add"
+              ? this.loading.add
+              : this.loading.edit,
         },
         secondBtnAction: {
           text: this.$route.params.type == "add" ? "Cancel" : "Delete",
@@ -144,6 +149,8 @@ export default {
             this.$route.params.type == "add"
               ? this.back
               : this.deleteCustomerInfo,
+          loading:
+            this.$route.params.type == "add" ? false : this.loading.delete,
         },
       };
     },
@@ -203,6 +210,11 @@ export default {
   data() {
     return {
       menu: false,
+      loading: {
+        delete: false,
+        edit: false,
+        add: false,
+      },
       form: {
         name: "",
         dob: "",
@@ -229,10 +241,12 @@ export default {
           mobileValidation: { state: false },
         },
       },
+      loaded: false,
     };
   },
   created() {
-    this.getCustomerInfo(this.$route.query.id);
+    if (this.$route.params.type == "add") this.loaded = true;
+    else this.getCustomerInfo(this.$route.query.id);
   },
   methods: {
     isUndefinedNullOrEmpty: isUndefinedNullOrEmpty,
@@ -242,8 +256,16 @@ export default {
           this.form[key] = details[key] || "not available";
         });
         this.form.prevId = this.form.id;
+
+        this.form.mobile.no.international = details["international"];
+        this.form.mobile.no.significant = details["significant"];
+        this.form.mobile.countryCode = details["countryCode"];
+        this.form.mobile.dialCode = details["dialCode"];
+
+        this.loaded = true;
       }
     },
+    submit() {},
     changeDate() {},
     async getCustomerInfo(id) {
       try {
@@ -258,30 +280,58 @@ export default {
       if (!valid) return;
 
       try {
+        this.loading.add = true;
         const { ret } = await userApi.addCustomer({
           ...this.form,
           dialCode: this.form.mobile.dialCode,
           countryCode: this.form.mobile.countryCode,
+          international: this.form.mobile.no.international,
+          significant: this.form.mobile.no.significant,
         });
 
         if (ret == 0) this.$router.replace({ name: "user-list" });
       } catch (e) {
         throw e;
+      } finally {
+        this.loading.add = false;
       }
     },
     async editCustomerInfo() {
+      const valid = await this.$refs.form.validate();
+      if (!valid) return;
+
       try {
+        this.loading.edit = true;
         const { ret } = await userApi.updateCustomer({
           ...this.form,
+          international: this.form.mobile.no.international,
+          significant: this.form.mobile.no.significant,
         });
         if (ret == 0) {
           this.$router.replace({ name: "user-list" });
         }
       } catch (e) {
         throw e;
+      } finally {
+        this.loading.edit = false;
       }
     },
-    deleteCustomerInfo() {},
+    async deleteCustomerInfo() {
+      try {
+        if (id) {
+          this.loading.delete = true;
+          const { ret } = await userApi.deleteCustomer({
+            id,
+          });
+          if (ret == 0) this.getList();
+          else throw "delete failed";
+        }
+      } catch (e) {
+        throw e;
+      } finally {
+        this.loading.delete = false;
+      }
+    },
     back() {
       return this.$router.replace({ name: "user-list" });
     },

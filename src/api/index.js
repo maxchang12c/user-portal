@@ -6,11 +6,11 @@ const userService = axios.create({
 });
 
 const requestHandler = request => {
-    console.log(request);
+    // console.log(request);
     return request;
 };
 const responseHandler = (response) => {
-    console.log(response);
+    // console.log(response);
     return response.data
 }
 
