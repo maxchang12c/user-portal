@@ -7,6 +7,7 @@ import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import './plugins/validators';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Toast, {
   transition: 'Vue-Toastification__bounce',

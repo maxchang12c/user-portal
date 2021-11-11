@@ -13,7 +13,7 @@ const requestHandler = request => {
 const responseHandler = (response) => {
     const { ret } = response.data
     if (ret == 999)
-        return router.push({ name: 'error' })
+        return router.replace({ name: 'error' })
     return response.data
 }
 

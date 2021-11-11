@@ -6,11 +6,11 @@
           <v-card-text>
             <v-row class="mx-0">
               <v-col class="d-flex justify-center my-4" cols="12" sm="3">
-                <v-avatar class="my-6" size="140">
-                  <img
-                    src="https://cdn.vuetifyjs.com/images/john.jpg"
-                    alt="John"
-                  />
+                <v-avatar color="primary" class="my-6" size="140">
+                  <span v-if="namePrefix" class="white--text text-h2">
+                    {{ namePrefix }}</span
+                  >
+                  <v-icon v-else color="white" size="80"> mdi-account-circle </v-icon>
                 </v-avatar>
               </v-col>
               <v-col class="py-0" sm="1">
@@ -34,6 +34,7 @@
                           :key="index"
                           :label="item.label"
                           :rules="item.rules"
+                          :maxlength="50"
                           outlined
                           solo
                           dense
@@ -61,6 +62,7 @@
                             v-model="form.dob"
                             label="Date"
                             persistent-hint
+                            readonly
                             v-bind="attrs"
                             v-on="on"
                           ></v-text-field>
@@ -255,6 +257,7 @@ export default {
         },
       },
       loaded: false,
+      namePrefix: "",
     };
   },
   created() {
@@ -268,6 +271,9 @@ export default {
         Object.keys(details).forEach((key) => {
           this.form[key] = details[key] || "not available";
         });
+        this.namePrefix = details["name"]
+          ? details["name"].substring(0, 1)
+          : null;
         this.form.prevId = this.form.id;
         this.form.prevEmail = this.form.email;
         this.form.dob = details["dob"];
@@ -279,8 +285,11 @@ export default {
         this.loaded = true;
       }
     },
-    submit() {},
-    changeDate() {},
+    submit() {
+      return this.$route.params.type == "add"
+        ? this.saveCustomerInfo()
+        : this.editCustomerInfo();
+    },
     async getCustomerInfo(id) {
       try {
         const { ret, data } = await userApi.getCustomerDetail({ id });

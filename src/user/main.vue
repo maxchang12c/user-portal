@@ -13,8 +13,11 @@
         ></v-progress-linear>
       </template>
       <div class="d-flex flex-column align-center">
-        <v-avatar class="my-6" size="140">
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+        <v-avatar color="primary" class="my-6" size="140">
+          <span v-if="previewData.namePrefix" class="white--text text-h2">
+            {{ previewData.namePrefix }}</span
+          >
+          <v-icon v-else color="white" size="80"> mdi-account-circle </v-icon>
         </v-avatar>
         <div class="preview">
           <div class="subtitle-1">Name: {{ previewData.name }}</div>
@@ -27,6 +30,7 @@
       <UserTable
         :items="customers"
         :headers="headers"
+        :isLoading="loading.delete"
         @clickRow="viewCustomer"
         @hoverInfo="assignPreviewValue"
       >
@@ -80,6 +84,7 @@ export default {
         name: "",
         email: "",
         id: "",
+        namePrefix: "",
       },
       headers: [
         {
@@ -87,9 +92,10 @@ export default {
           align: "start",
           sortable: false,
           value: "name",
+          width: 200,
         },
-        { text: "National ID", value: "id" },
-        { text: "Email", value: "email" },
+        { text: "National ID", value: "id", width: 200 },
+        { text: "Email", value: "email", width: 200 },
         { text: "DOB", value: "dob" },
         {
           text: "",
@@ -105,15 +111,19 @@ export default {
 
   methods: {
     assignPreviewValue(item) {
-      this.previewData = { ...item };
+      this.previewData = {
+        ...item,
+        namePrefix: item.name ? item.name.substring(0, 1) : null,
+      };
     },
     async deleteCustomer({ id }) {
       try {
         if (id) {
+          this.loading.delete = true;
           const { ret } = await userApi.deleteCustomer({
             id,
           });
-          if (ret == 0) this.getList();
+          if (ret == 0) await this.getList();
           else throw "delete failed";
         }
       } catch (e) {
@@ -123,7 +133,9 @@ export default {
           name: "",
           email: "",
           id: "",
+          namePrefix: "",
         };
+        this.loading.delete = false;
       }
     },
     async getList() {
