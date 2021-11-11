@@ -231,6 +231,7 @@ export default {
         avatar: "",
         remarks: "",
         prevId: "",
+        prevEmail: "",
         mobile: {
           no: {
             international: "",
@@ -264,6 +265,7 @@ export default {
           this.form[key] = details[key] || "not available";
         });
         this.form.prevId = this.form.id;
+        this.form.prevEmail = this.form.email;
 
         this.form.mobile.no.international = details["international"];
         this.form.mobile.no.significant = details["significant"];
@@ -304,6 +306,10 @@ export default {
             break;
           case 3201:
             this.showError("ID existed");
+            break;
+          case 3202:
+            this.showError("Email existed");
+            break;
           default:
             break;
         }
@@ -333,6 +339,10 @@ export default {
             break;
           case 3201:
             this.showError("ID existed");
+            break;
+          case 3202:
+            this.showError("Email existed");
+            break;
           default:
             break;
         }

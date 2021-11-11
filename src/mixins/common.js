@@ -4,7 +4,7 @@ export default {
         showSuccess(msg) {
             Vue.$toast.success(msg, {
                 position: 'top-right',
-                timeout: 5000,
+                timeout: 2000,
                 closeOnClick: true,
                 pauseOnFocusLoss: true,
                 pauseOnHover: true,
@@ -20,7 +20,7 @@ export default {
         async showError(msg) {
             Vue.$toast.error(msg, {
                 position: 'top-right',
-                timeout: 5000,
+                timeout: 2000,
                 closeOnClick: true,
                 pauseOnFocusLoss: true,
                 pauseOnHover: true,

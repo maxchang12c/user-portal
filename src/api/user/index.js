@@ -37,6 +37,7 @@ export const userApi = {
         countryCode,
         dob,
         prevId,
+        prevEmail,
         international,
         significant
     }) {
@@ -46,7 +47,7 @@ export const userApi = {
             email,
             dialCode,
             countryCode,
-            dob, prevId, international,
+            dob, prevId, international, prevEmail,
             significant
         };
         return Api.post('/update', data);
