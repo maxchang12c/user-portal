@@ -28,7 +28,6 @@
                           :name="item.identifier"
                           :type="'email'"
                           :model.sync="item.model"
-                          :tab-index="index"
                           :is="item.name"
                           mode="aggressive"
                           :id="index.toString()"
