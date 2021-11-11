@@ -5,6 +5,7 @@
     item-key="name"
     class="elevation-1"
     :search="search"
+    :items-per-page="100"
     hide-default-footer
   >
     <template v-slot:top>
@@ -12,7 +13,7 @@
         <v-text-field
           v-model="search"
           label="Search"
-          class="mx-4"
+          class="mx-4 search-field"
         ></v-text-field>
         <slot name="top-right"></slot>
       </div>
@@ -81,5 +82,8 @@ export default {
   tr {
     cursor: pointer;
   }
+}
+.search-field {
+  max-width: 200px;
 }
 </style>

@@ -54,7 +54,6 @@
             small
             depressed
             color="error"
-            :loading="loading.delete"
             @click.stop="deleteCustomer(item)"
           >
             Delete
@@ -111,7 +110,6 @@ export default {
     async deleteCustomer({ id }) {
       try {
         if (id) {
-          this.loading.delete = true;
           const { ret } = await userApi.deleteCustomer({
             id,
           });
@@ -121,7 +119,6 @@ export default {
       } catch (e) {
         throw e;
       } finally {
-        this.loading.delete = false;
         this.previewData = {
           name: "",
           email: "",
