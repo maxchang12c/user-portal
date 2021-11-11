@@ -189,6 +189,7 @@ export default {
           rules: {
             required: true,
             email: true,
+            apiError: false,
           },
           identifier: "Email",
         },
@@ -203,6 +204,10 @@ export default {
           },
           label: "Enter Your ID",
           identifier: "ID",
+          rules: {
+            required: true,
+            apiError: false,
+          },
         },
       ];
     },
