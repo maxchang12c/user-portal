@@ -2,6 +2,8 @@ const Home = () => import('@/home');
 const User = () => import('@/user');
 const UserList = () => import('@/user/main');
 const UserDetail = () => import('@/user/detail');
+const Error = () => import('@/error');
+
 
 
 
@@ -18,5 +20,8 @@ export const routes = [
                 ]
             }]
     },
+    {
+        path: '/404', name: 'error', component: Error
+    }
 
 ]

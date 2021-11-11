@@ -266,7 +266,7 @@ export default {
         });
         this.form.prevId = this.form.id;
         this.form.prevEmail = this.form.email;
-
+        this.form.dob = details["dob"];
         this.form.mobile.no.international = details["international"];
         this.form.mobile.no.significant = details["significant"];
         this.form.mobile.countryCode = details["countryCode"];

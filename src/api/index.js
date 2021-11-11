@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from '../router';
 
 const userService = axios.create({
     baseURL: window.env.api.baseUrl,
@@ -10,7 +11,9 @@ const requestHandler = request => {
     return request;
 };
 const responseHandler = (response) => {
-    // console.log(response);
+    const { ret } = response.data
+    if (ret == 999)
+        return router.push({ name: 'error' })
     return response.data
 }
 
