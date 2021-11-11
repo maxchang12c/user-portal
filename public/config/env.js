@@ -1,5 +1,5 @@
 window.env = {
     api: {
-        baseUrl: 'http://localhost:3020/'
+        baseUrl: 'http://localhost:3021/'
     }
 }

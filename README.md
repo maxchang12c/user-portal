@@ -19,11 +19,8 @@ npm run build
 ```
 npm run test
 ```
+### Port connect to service 
 
-### Lints and fixes files
-```
-npm run lint
-```
+go to @/user-portal/public/config/env.js
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+if port 3021 is occupied , use 3022 same as user service.
