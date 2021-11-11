@@ -2,8 +2,9 @@
 
 ## Project setup
 ```
+use node ver v10.13.0
+
 npm install
-```
 
 ### Compiles and hot-reloads for development
 ```
