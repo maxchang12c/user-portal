@@ -5,7 +5,14 @@ import i18n from './translations';
 import vuetify from './plugins/vuetify'
 import { ValidationObserver, ValidationProvider } from 'vee-validate';
 import './plugins/validators';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
+Vue.use(Toast, {
+  transition: 'Vue-Toastification__bounce',
+  maxToasts: 20,
+  newestOnTop: true,
+});
 
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);

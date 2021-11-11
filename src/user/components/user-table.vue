@@ -5,6 +5,7 @@
     item-key="name"
     class="elevation-1"
     :search="search"
+    hide-default-footer
   >
     <template v-slot:top>
       <div class="d-flex justify-space-between align-center">
@@ -76,6 +77,7 @@ export default {
 </script>
 <style lang="scss">
 .v-data-table {
+  height: 100%;
   tr {
     cursor: pointer;
   }

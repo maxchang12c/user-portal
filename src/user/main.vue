@@ -1,5 +1,28 @@
 <template>
   <div class="d-flex">
+    <v-card
+      :min-height="'500'"
+      max-width="250"
+      class="d-flex justify-center mr-4 flex-grow-1"
+    >
+      <template slot="progress">
+        <v-progress-linear
+          color="deep-purple"
+          height="10"
+          indeterminate
+        ></v-progress-linear>
+      </template>
+      <div class="d-flex flex-column align-center">
+        <v-avatar class="my-6" size="140">
+          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
+        </v-avatar>
+        <div class="preview">
+          <div class="subtitle-1">Name: {{ previewData.name }}</div>
+          <div>Id: {{ previewData.id }}</div>
+          <div>Email: {{ previewData.email }}</div>
+        </div>
+      </div>
+    </v-card>
     <div class="flex-grow-1">
       <UserTable
         :items="customers"
@@ -39,29 +62,6 @@
         </template>
       </UserTable>
     </div>
-    <v-card
-      :min-height="'500'"
-      max-width="250"
-      class="d-flex justify-center ml-2 flex-grow-1"
-    >
-      <template slot="progress">
-        <v-progress-linear
-          color="deep-purple"
-          height="10"
-          indeterminate
-        ></v-progress-linear>
-      </template>
-      <div class="d-flex flex-column align-center">
-        <v-avatar class="my-6" size="140">
-          <img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="John" />
-        </v-avatar>
-        <div class="preview">
-          <div class="subtitle-1">Name: {{ previewData.name }}</div>
-          <div>Id: {{ previewData.id }}</div>
-          <div>Email: {{ previewData.email }}</div>
-        </div>
-      </div>
-    </v-card>
   </div>
 </template>
 <script>
@@ -122,6 +122,11 @@ export default {
         throw e;
       } finally {
         this.loading.delete = false;
+        this.previewData = {
+          name: "",
+          email: "",
+          id: "",
+        };
       }
     },
     async getList() {
